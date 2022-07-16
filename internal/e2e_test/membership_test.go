@@ -4,7 +4,7 @@ import (
 	"comento_git_practice/app/membership"
 	"fmt"
 	"github.com/gavv/httpexpect"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"golang_web_programming/internal"
 	"net/http"
 	"testing"
