@@ -1,7 +1,6 @@
 package e2e_test
 
 import (
-	"comento_git_practice/app/membership"
 	"fmt"
 	"github.com/gavv/httpexpect"
 	"github.com/labstack/echo/v4"
@@ -28,7 +27,7 @@ func TestTossRecreate(t *testing.T) {
 	t.Run("토스 멤버십을 신청한 후 삭제했다면, 다시 신청할 수 없다.", func(t *testing.T) {
 		// given: 토스 멤버십을 신청한다.
 		membershipCreateRequest := e.POST("/v1/memberships").
-			WithJSON(membership.CreateRequest{
+			WithJSON(internal.CreateRequest{
 				UserName:       "andy",
 				MembershipType: "toss",
 			}).
@@ -43,7 +42,7 @@ func TestTossRecreate(t *testing.T) {
 
 		// then: 토스 멤버십을 다시 신청할 수 없다. 멤버십의 상태가 "탈퇴한 회원"이다.
 		e.POST("/v1/memberships").
-			WithJSON(membership.CreateRequest{
+			WithJSON(internal.CreateRequest{
 				UserName:       "andy",
 				MembershipType: "toss",
 			}).
