@@ -1,4 +1,4 @@
-package internal
+package memberships
 
 import (
 	"github.com/google/uuid"

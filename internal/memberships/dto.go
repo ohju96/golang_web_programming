@@ -1,4 +1,4 @@
-package internal
+package memberships
 
 type CreateRequest struct {
 	UserName       string `json:"user_name"`
