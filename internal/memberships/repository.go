@@ -13,7 +13,7 @@ func NewRepository(data map[string]Membership) *Repository {
 }
 
 func (r *Repository) Create(membership Membership) {
-	r.data[membership.UserName] = membership
+	r.data[membership.ID] = membership
 }
 
 func (r *Repository) GetById(id string) (Membership, error) {
@@ -23,4 +23,12 @@ func (r *Repository) GetById(id string) (Membership, error) {
 		}
 	}
 	return Membership{}, ErrNotFoundMembership
+}
+
+func (r *Repository) Update(membership Membership) {
+	r.data[membership.ID] = membership
+}
+
+func (r *Repository) DeleteById(id string) {
+	delete(r.data, id)
 }

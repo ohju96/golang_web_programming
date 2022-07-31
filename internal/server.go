@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	echoSwagger "github.com/swaggo/echo-swagger"
+	_ "golang_web_programming/cmd/docs"
 	"golang_web_programming/internal/logo"
 	"golang_web_programming/internal/memberships"
 	"golang_web_programming/internal/user"
@@ -41,6 +43,10 @@ func (s *Server) Run() {
 			context.JSON(http.StatusBadRequest, map[string]string{"message": "invalid password"})
 			return
 		}
+		if errors.Is(err, memberships.ErrNotFoundMembership) {
+			context.JSON(http.StatusBadRequest, map[string]string{"message": "not found membership"})
+			return
+		}
 		e.DefaultHTTPErrorHandler(err, context)
 	}
 
@@ -50,6 +56,7 @@ func (s *Server) Run() {
 
 func (s *Server) Routes(e *echo.Echo) {
 	g := e.Group("/v1")
+	g.GET("/swagger/*", echoSwagger.WrapHandler)
 	RouteMemberships(g, s.membershipController, s.userMiddleware)
 	RouteLogo(g, s.logoController)
 	RouteUser(g, s.userController)
@@ -59,6 +66,8 @@ func RouteMemberships(e *echo.Group, c memberships.Controller, userMiddleware us
 	jwtMiddleware := middleware.JWTWithConfig(middleware.JWTConfig{Claims: &user.Claims{}, SigningKey: user.DefaultSecret})
 	e.GET("/memberships/:id", c.GetByID, jwtMiddleware, userMiddleware.ValidateAdmin)
 	e.POST("/memberships", c.Create)
+	e.PUT("/memberships/:id", c.Update)
+	e.DELETE("/memberships/:id", c.Delete)
 }
 
 func RouteLogo(e *echo.Group, c logo.Controller) {
