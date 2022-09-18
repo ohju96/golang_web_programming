@@ -18,7 +18,7 @@ func TestService(t *testing.T) {
 			Return(SMSResponse{http.StatusOK, http.StatusText(http.StatusOK)}, nil)
 
 		err := service.Send(context.Background(), receiver)
-		assert.Nil(t, err, ErrSMSFail)
+		assert.Nil(t, err)
 		client.AssertNumberOfCalls(t, "Send", 1)
 	})
 
@@ -36,7 +36,7 @@ func TestService(t *testing.T) {
 		client.AssertNumberOfCalls(t, "Send", 3) // TODO
 	})
 
-	t.Run("TooManyRequest 발생할 때마다 Retry하며, 도중에 성공할 경우 재시도하지 않는다..", func(t *testing.T) {
+	t.Run("TooManyRequest 발생할 때마다 Retry하며, 도중에 성공할 경우 재시도하지 않는다.", func(t *testing.T) {
 		/*
 			client
 			첫번째 요청의 응답: Code: http.StatusTooManyRequest, Message: http.StatusText(http.TooManyRequest)
@@ -64,6 +64,7 @@ func TestServiceWithContext(t *testing.T) {
 			context.WithCancel 로 테스트
 			client에 API이 call이 된 시점에 Cancel된다.
 			client는 TooManyRequest를 리턴하고 있다.
+			client가 재시도하려는 시점에 context가 Cancel되었다는 것을 알게 되고 에러를 리턴한다.
 
 			service에서 리턴한 에러가 context에서 발생한 에러임을 검증한다.
 		*/
@@ -75,6 +76,7 @@ func TestServiceWithContext(t *testing.T) {
 			context.WithTimeout : 500 ms
 			client API Call하는데 1초가 소요된다.
 			client는 TooManyRequest를 리턴하고 있다.
+			client가 재시도하려는 시점에 context가 Timeout되었다는 것을 알게 되고 에러를 리턴한다.
 
 			service에서 리턴한 에러가 context에서 발생한 에러임을 검증한다.
 		*/
