@@ -67,9 +67,5 @@ func (s *Service) Delete(id string) error {
 		return err
 	}
 	s.repository.DeleteById(id)
-
-	for _, d := range s.repository.data {
-		fmt.Println(d)
-	}
 	return nil
 }
