@@ -2,21 +2,31 @@ package memberships
 
 import "errors"
 
-var ErrNotFoundMembership = errors.New("not found membership")
+var (
+	ErrNotFoundMembership            = errors.New("not found membership")
+	_                     Repository = &InMemoryRepository{}
+)
 
-type Repository struct {
+type Repository interface {
+	Create(membership Membership)
+	GetById(id string) (Membership, error)
+	Update(membership Membership)
+	DeleteById(id string)
+}
+
+type InMemoryRepository struct {
 	data map[string]Membership
 }
 
-func NewRepository(data map[string]Membership) *Repository {
-	return &Repository{data: data}
+func NewRepository(data map[string]Membership) *InMemoryRepository {
+	return &InMemoryRepository{data: data}
 }
 
-func (r *Repository) Create(membership Membership) {
+func (r *InMemoryRepository) Create(membership Membership) {
 	r.data[membership.ID] = membership
 }
 
-func (r *Repository) GetById(id string) (Membership, error) {
+func (r *InMemoryRepository) GetById(id string) (Membership, error) {
 	for _, membership := range r.data {
 		if membership.ID == id {
 			return membership, nil
@@ -25,10 +35,10 @@ func (r *Repository) GetById(id string) (Membership, error) {
 	return Membership{}, ErrNotFoundMembership
 }
 
-func (r *Repository) Update(membership Membership) {
+func (r *InMemoryRepository) Update(membership Membership) {
 	r.data[membership.ID] = membership
 }
 
-func (r *Repository) DeleteById(id string) {
+func (r *InMemoryRepository) DeleteById(id string) {
 	delete(r.data, id)
 }
