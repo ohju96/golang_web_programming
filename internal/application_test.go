@@ -110,10 +110,15 @@ func TestUpdate(t *testing.T) {
 
 	t.Run("사용자 이름을 입력하지 않은 경우, 예외 처리한다.", func(t *testing.T) {
 		// GIVEN
+		app := NewApplication(*NewRepository(map[string]Membership{}))
+		createRes, _ := app.Create(CreateRequest{"ohjuhyeon", "naver"})
 
 		// WHEN
+		updateRes, err := app.Update(UpdateRequest{createRes.ID, "", createRes.MembershipType})
 
 		// THEN
+		assert.Nil(t, updateRes)
+		assert.NotNil(t, err)
 	})
 
 	t.Run("멤버쉽 타입을 입력하지 않은 경우, 예외 처리한다.", func(t *testing.T) {

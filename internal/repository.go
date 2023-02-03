@@ -38,6 +38,13 @@ func (r *Repository) CreateUser(request CreateRequest) (*Membership, error) {
 		return nil, errors.New("허용 안 됩니다")
 	}
 
+	// 위 로직은 되는데 이 로직이 왜 안 되는지 체크해 봐야 한다.
+	//for i, _ := range whiteSlice {
+	//	if whiteSlice[i] != request.MembershipType {
+	//		return nil, errors.New("허용 안 됩니다")
+	//	}
+	//}
+
 	// 멤버십 생성
 	membership := Membership{
 		ID:             strconv.Itoa(len(r.data) + 1),
@@ -51,20 +58,24 @@ func (r *Repository) CreateUser(request CreateRequest) (*Membership, error) {
 
 func (r *Repository) UpdateUser(request UpdateRequest) (*Membership, error) {
 
-	// todo 업데이트 진행 필요
 	membership := r.data[request.ID]
 
-	//// 수정하려는 사용자 이름이 이미 있으면 예외 처리
-	//for _, existingUser := range r.data {
-	//	if existingUser.UserName == request.UserName {
-	//		return nil, errors.New("이미 존재하는 이름입니다")
-	//	}
-	//}
-	//
-	//// 멤버십 아이디 입력하지 않으면 예외
-	//if request.ID == "" {
-	//	return nil, errors.New("멤버십 아이디 입력하지 않음")
-	//}
+	// 수정하려는 사용자 이름이 이미 있으면 예외 처리
+	for _, existingUser := range r.data {
+		if existingUser.UserName == request.UserName {
+			return nil, errors.New("이미 존재하는 이름입니다")
+		}
+	}
+
+	// 멤버십 아이디 입력하지 않으면 예외
+	if request.ID == "" {
+		return nil, errors.New("멤버십 아이디 입력하지 않음")
+	}
+
+	// 이름을 입력하지 않으면 예외
+	if request.UserName == "" {
+		return nil, errors.New("이름 입력하지 않음")
+	}
 
 	newMembership := Membership{membership.ID, request.UserName, request.MembershipType}
 
