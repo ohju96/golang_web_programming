@@ -61,9 +61,11 @@ func (r *Repository) UpdateUser(request UpdateRequest) (*Membership, error) {
 	membership := r.data[request.ID]
 
 	// 수정하려는 사용자 이름이 이미 있으면 예외 처리
-	for _, existingUser := range r.data {
-		if existingUser.UserName == request.UserName {
-			return nil, errors.New("이미 존재하는 이름입니다")
+	if membership.UserName != request.UserName {
+		for _, existingUser := range r.data {
+			if existingUser.UserName == request.UserName {
+				return nil, errors.New("이미 존재하는 이름입니다")
+			}
 		}
 	}
 
@@ -77,10 +79,36 @@ func (r *Repository) UpdateUser(request UpdateRequest) (*Membership, error) {
 		return nil, errors.New("이름 입력하지 않음")
 	}
 
+	// 멤버쉽을 입력하지 않음
+	if request.MembershipType == "" {
+		return nil, errors.New("멤버십을 입력하지 않음")
+	}
+
+	// 이외 타입 입력 시 실패
+	whiteSlice := []string{"naver", "toss", "payco"}
+	if !contains(whiteSlice, request.MembershipType) {
+		return nil, errors.New("허용 안 됩니다")
+	}
+
 	newMembership := Membership{membership.ID, request.UserName, request.MembershipType}
 
 	r.data[membership.ID] = newMembership
 	return &newMembership, nil
+}
+
+func (r *Repository) DeleteUser(id string) error {
+
+	if id == "" {
+		return errors.New("id를 입력하지 않았습니다")
+	}
+
+	_, ok := r.data[id]
+	if ok == false {
+		return errors.New("입력한 id가 존재하지 않습니다")
+	}
+
+	delete(r.data, id)
+	return nil
 }
 
 // 슬라이스 체크용 contains 메서드
