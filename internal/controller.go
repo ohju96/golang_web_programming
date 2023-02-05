@@ -19,33 +19,33 @@ func (controller *Controller) Create(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, "바인딩 에러")
 	}
-	createResponse, err := controller.service.Create(req)
+	res, err := controller.service.Create(req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, "서비스 로직 에러")
 	}
 
-	response := CreateResponse{
-		ID:             createResponse.ID,
-		MembershipType: createResponse.MembershipType,
-	}
+	//response := CreateResponse{
+	//	ID:             createResponse.ID,
+	//	MembershipType: createResponse.MembershipType,
+	//}
 
-	return c.JSON(http.StatusOK, response)
+	return c.JSON(http.StatusOK, res)
 }
 
 func (controller *Controller) GetByID(c echo.Context) error {
 	id := c.Param("id")
 
-	user, err := controller.service.GetByID(id)
+	res, err := controller.service.GetByID(id)
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, "서비스 로직 에러")
 	}
 
-	response := GetResponse{
-		ID:             user.ID,
-		UserName:       user.UserName,
-		MembershipType: user.MembershipType,
-	}
+	//response := GetResponse{
+	//	ID:             user.ID,
+	//	UserName:       user.UserName,
+	//	MembershipType: user.MembershipType,
+	//}
 
-	return c.JSON(http.StatusOK, response)
+	return c.JSON(http.StatusOK, res)
 }
