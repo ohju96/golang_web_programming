@@ -33,6 +33,7 @@ func (s *Server) Routes(e *echo.Echo) {
 }
 
 func RouteMemberships(e *echo.Group, c Controller) {
-	e.GET("/memberships", c.GetByID)
+	e.GET("/memberships/:id", c.GetByID)
 	e.POST("/memberships", c.Create)
+	e.PUT("/memberships", c.Update)
 }
