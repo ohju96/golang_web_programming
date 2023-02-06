@@ -2,9 +2,11 @@ package practice
 
 import (
 	"errors"
+
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
+
 	"testing"
 )
 
@@ -27,6 +29,7 @@ func generateRandomID() string {
 
 func TestPractice(t *testing.T) {
 	t.Run("두 숫자를 더하면 합이 나온다", func(t *testing.T) {
+
 		actual := sum(1, 2)
 		expected := 3
 		// actual과 expected가 같은지 검증해주세요.
