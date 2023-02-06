@@ -6,6 +6,7 @@ require (
 	github.com/gavv/httpexpect v2.0.0+incompatible
 	github.com/google/uuid v1.3.0
 	github.com/labstack/echo/v4 v4.7.2
+
 	github.com/stretchr/testify v1.8.0
 )
 
@@ -42,5 +43,6 @@ require (
 	golang.org/x/net v0.0.0-20220708220712-1185a9018129 // indirect
 	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 	golang.org/x/text v0.3.7 // indirect
+
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
