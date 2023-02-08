@@ -1,8 +1,10 @@
 package main
 
-import "golang_web_programming/internal"
+import (
+	"golang_web_programming/internal/membership"
+)
 
 func main() {
-	server := internal.NewDefaultServer()
+	server := membership.NewDefaultServer()
 	server.Run()
 }

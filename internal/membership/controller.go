@@ -1,4 +1,4 @@
-package internal
+package membership
 
 import (
 	"github.com/labstack/echo/v4"
