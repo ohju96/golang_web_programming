@@ -32,7 +32,6 @@ func TestGolang(t *testing.T) {
 	t.Run("fan out, fan in", func(t *testing.T) {
 		/*
 			TODO 주어진 코드를 수정해서 테스트가 통과하도록 해주세요!
-
 			- inputCh에 1, 2, 3 값을 넣는다.
 			- inputCh로 부터 값을 받아와, value * 10 을 한 후 outputCh에 값을 넣어준다.
 			- outputCh에서 읽어온 값을 비교한다.
