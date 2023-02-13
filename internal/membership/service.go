@@ -13,6 +13,17 @@ func NewService(repository Repository) *Service {
 	return &Service{repository: repository}
 }
 
+func (s *Service) Login(request LoginRequest) (*LoginResponse, error) {
+	login, err := s.repository.Login(request)
+	if err != nil {
+		// todo ..
+	}
+	response := LoginResponse{
+		ID: login.ID,
+	}
+	return &response, nil
+}
+
 func (s *Service) Create(request CreateRequest) (*CreateResponse, error) {
 
 	// 검증 서비스 로직

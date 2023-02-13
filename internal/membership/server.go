@@ -41,9 +41,6 @@ func RouteMemberships(e *echo.Group, c Controller) {
 		middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
 			LogStatus: true,
 			LogURI:    true,
-			BeforeNextFunc: func(c echo.Context) {
-				c.Set("customValueFromContext", 42)
-			},
 			LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
 				fmt.Printf("httpMethod==%v, http-status-code==%v, uri==%v \n", c.Request().Method, v.Status, v.URI)
 				return nil
@@ -62,7 +59,8 @@ func RouteMemberships(e *echo.Group, c Controller) {
 		}),
 	)
 
-	e.GET("/memberships/:id", c.GetByID)
-	e.POST("/memberships", c.Create)
-	e.PUT("/memberships", c.Update)
+	e.GET("/memberships/:id", c.GetByID) // 멤버십 조회
+	e.POST("/memberships", c.Create)     // 멤버십 생성
+	e.PUT("/memberships", c.Update)      // 멤버십 수정
+	e.POST("/memberships/logins", c.Login)
 }

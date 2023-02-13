@@ -12,6 +12,15 @@ func NewRepository(data map[string]Membership) *Repository {
 	return &Repository{data: data}
 }
 
+func (r *Repository) Login(request LoginRequest) (Membership, error) {
+	for _, membership := range r.data {
+		if membership.ID == request.ID && membership.UserName == request.UserName {
+			return membership, nil
+		}
+	}
+	return Membership{}, ErrNotFoundMembership
+}
+
 func (r *Repository) Create(membership Membership) {
 	r.data[membership.UserName] = membership
 }

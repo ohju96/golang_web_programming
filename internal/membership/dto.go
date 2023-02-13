@@ -27,3 +27,12 @@ type GetResponse struct {
 	UserName       string `json:"user_name"`
 	MembershipType string `json:"membership_type"`
 }
+
+type LoginRequest struct {
+	ID       string `json:"id"`
+	UserName string `json:"user_name"`
+}
+
+type LoginResponse struct {
+	ID string `json:"id"`
+}

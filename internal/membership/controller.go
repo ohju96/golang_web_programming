@@ -13,6 +13,19 @@ func NewController(service Service) *Controller {
 	return &Controller{service: service}
 }
 
+func (controller *Controller) Login(c echo.Context) error {
+	var request LoginRequest
+	if err := c.Bind(&request); err != nil {
+		return c.JSON(http.StatusBadRequest, "바인딩 에러")
+	}
+
+	login, err := controller.service.Login(request)
+	if err != nil {
+
+	}
+	return c.JSON(http.StatusOK, login)
+}
+
 func (controller *Controller) Create(c echo.Context) error {
 
 	// 바인딩 및 에러 처리
