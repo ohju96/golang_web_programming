@@ -62,7 +62,7 @@ func RouteMemberships(e *echo.Group, c memberships.Controller, userMiddleware us
 }
 
 func RouteLogo(e *echo.Group, c logo.Controller) {
-	e.GET("/logo", c.Get)
+	e.GET("/logo", c.GetEtag)
 }
 
 func RouteUser(e *echo.Group, c user.Controller) {
