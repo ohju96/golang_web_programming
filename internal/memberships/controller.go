@@ -1,6 +1,7 @@
 package memberships
 
 import (
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
@@ -31,3 +32,13 @@ func (controller *Controller) Create(c echo.Context) error {
 func (controller *Controller) GetByID(c echo.Context) error {
 	return c.JSON(http.StatusOK, "hello world")
 }
+
+func (controller *Controller) Update(c echo.Context) error {
+	id := c.Get("user")
+	fmt.Println("id : ", id)
+	return c.JSON(http.StatusOK, id)
+}
+
+/*func (controller *Controller) Delete(c echo.Context) error {
+	return
+}*/

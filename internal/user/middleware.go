@@ -27,7 +27,11 @@ func (m Middleware) ValidateAdmin(next echo.HandlerFunc) echo.HandlerFunc {
 
 func (m Middleware) ValidateMember(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		panic("implement me")
+		user := c.Get("user").(*jwt.Token)
+		claims := user.Claims.(*Claims)
+		if claims.IsAdmin {
+			return echo.ErrUnauthorized
+		}
 		return next(c)
 	}
 }

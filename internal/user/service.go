@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"fmt"
 	"github.com/golang-jwt/jwt"
 )
 
@@ -19,6 +20,7 @@ func NewService(secret []byte) *Service {
 }
 
 func (s Service) Login(name, password string) (LoginResponse, error) {
+	fmt.Println("name : ", name, "password : ", password)
 	if name != password {
 		return LoginResponse{}, ErrInvalidPassword
 	}

@@ -57,8 +57,10 @@ func (s *Server) Routes(e *echo.Echo) {
 
 func RouteMemberships(e *echo.Group, c memberships.Controller, userMiddleware user.Middleware) {
 	jwtMiddleware := middleware.JWTWithConfig(middleware.JWTConfig{Claims: &user.Claims{}, SigningKey: user.DefaultSecret})
-	e.GET("/memberships/:id", c.GetByID, jwtMiddleware, userMiddleware.ValidateAdmin)
+	e.GET("/memberships/:id", c.GetByID, jwtMiddleware, userMiddleware.ValidateAdmin, userMiddleware.ValidateMember)
 	e.POST("/memberships", c.Create)
+	e.PUT("/memberships", c.Update, jwtMiddleware, userMiddleware.ValidateMember)
+	//e.DELETE("/memberships", c.Delete, jwtMiddleware, userMiddleware.ValidateAdmin)
 }
 
 func RouteLogo(e *echo.Group, c logo.Controller) {
