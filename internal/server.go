@@ -26,13 +26,13 @@ type Server struct {
 func NewDefaultServer() *Server {
 	data := map[string]memberships.Membership{}
 	membershipRepository := memberships.NewRepository(data)
-	membershipService := memberships.NewService(*membershipRepository)
+	membershipService := memberships.NewService(membershipRepository)
 	membershipController := memberships.NewController(*membershipService)
 	return &Server{
 		membershipController: *membershipController,
 		logoController:       *logo.NewController(),
 		userController:       *user.NewController(*user.NewService(user.DefaultSecret)),
-		userMiddleware:       *user.NewMiddleware(*membershipRepository),
+		userMiddleware:       *user.NewMiddleware(membershipRepository),
 	}
 }
 

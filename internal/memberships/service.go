@@ -2,7 +2,6 @@ package memberships
 
 import (
 	"errors"
-	"fmt"
 	"github.com/google/uuid"
 )
 
