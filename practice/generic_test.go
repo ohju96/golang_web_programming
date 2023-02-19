@@ -2,6 +2,7 @@ package practice
 
 import (
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/exp/constraints"
 	"testing"
 )
 
@@ -9,8 +10,8 @@ type Person interface {
 	ID() string
 }
 
-func Equals(s1, s2 Student) bool {
-	return s1 == s2
+func Equals[T Person](s1, s2 T) bool {
+	return s1.ID() == s2.ID()
 }
 
 type Student struct {
@@ -19,41 +20,43 @@ type Student struct {
 	Age          int
 }
 
+func (s Student) ID() string {
+	return s.IDCardNumber
+}
 func TestGeneric(t *testing.T) {
-	/*
-		int1 := int8(1)
-		int2 := int8(2)
-		int3 := int16(10)
-		int4 := int16(20)
-		int5 := int32(4)
-		int6 := int32(6)
-		int7 := 10
-		int8 := 20
-	*/
+
+	int1 := int8(1)
+	int2 := int8(2)
+	int3 := int16(10)
+	int4 := int16(20)
+	int5 := int32(4)
+	int6 := int32(6)
+	int7 := 10
+	int8 := 20
 
 	t.Run("int8, int16만 덧셈 가능하게 만들기", func(t *testing.T) {
-		/*
-			assert.EqualValues(t, Add1(int1, int2), 3)
-			assert.EqualValues(t, Add1(int3, int4), 30)
-		*/
+
+		assert.EqualValues(t, Add1(int1, int2), 3)
+		assert.EqualValues(t, Add1(int3, int4), 30)
+
 	})
 
 	t.Run("constraint 사용하여 integer 덧셈 가능하게 만들기", func(t *testing.T) {
 		// import "golang.org/x/exp/constraints"
-		/*
-			assert.EqualValues(t, Add2(int1, int2), 3)
-			assert.EqualValues(t, Add2(int3, int4), 30)
-			assert.EqualValues(t, Add2(int5, int6), 10)
-			assert.EqualValues(t, Add2(int7, int8), 30)
-		*/
+
+		assert.EqualValues(t, Add2(int1, int2), 3)
+		assert.EqualValues(t, Add2(int3, int4), 30)
+		assert.EqualValues(t, Add2(int5, int6), 10)
+		assert.EqualValues(t, Add2(int7, int8), 30)
+
 	})
 
 	t.Run("parameter에 각각 다른 타입 덧셈 가능하게 만들기", func(t *testing.T) {
-		/*
-			assert.Equal(t, Add3(int1, int8), 21)
-			assert.Equal(t, Add3(int2, int3), 12)
-			assert.Equal(t, Add3(int4, int7), 30)
-		*/
+
+		assert.Equal(t, Add3(int1, int8), 21)
+		assert.Equal(t, Add3(int2, int3), 12)
+		assert.Equal(t, Add3(int4, int7), 30)
+
 	})
 
 	t.Run("ID가 같다면 같은 학생으로 취급한다.", func(t *testing.T) {
@@ -61,4 +64,16 @@ func TestGeneric(t *testing.T) {
 		s2 := Student{IDCardNumber: "1", Name: "tom", Age: 24}
 		assert.True(t, Equals(s1, s2))
 	})
+}
+
+func Add1[T int8 | int16](a, b T) T {
+	return a + b
+}
+
+func Add2[T constraints.Integer](a, b T) T {
+	return a + b
+}
+
+func Add3[T1 constraints.Integer, T2 constraints.Integer](a T1, b T2) int {
+	return int(a) + int(b)
 }
